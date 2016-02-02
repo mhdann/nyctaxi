@@ -15,14 +15,9 @@ setwd("D:/data/taxi/nyctaxi/")
 # Download the RAW data
 ###############################################################################
 
-# Yellow cab data, 2015 Jan - June
-urls2015 = c(paste0("https://storage.googleapis.com/tlc-trip-data/2014/yellow_tripdata_2014-0", 1:6,".csv"))
+urls = fread("urlsYellow.csv")[,x]
 
-# Yellow cab data, 2014
-# urls2014 = c(paste0("https://storage.googleapis.com/tlc-trip-data/2014/yellow_tripdata_2014-0", 1:9,".csv"),
-#             "https://storage.googleapis.com/tlc-trip-data/2014/yellow_tripdata_2014-11.csv",
-#             "https://storage.googleapis.com/tlc-trip-data/2014/yellow_tripdata_2014-12.csv")
-
+urls2015 = urls[grep("2015", urls)]
 
 library(RCurl)
 bdown=function(url, file){
@@ -36,6 +31,7 @@ bdown=function(url, file){
 
 fnames = paste0("./nyc_yellow_raw/", 
                 sapply(strsplit(urls2015, "/"), function(x){x[6]}))
+
 # Warning! 20 minutes @ 200 mbps
 mapply(bdown, urls2015, fnames)  
 
