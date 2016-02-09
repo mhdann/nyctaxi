@@ -9,15 +9,17 @@ library(data.table)
 library(ggplot2)
 library(lubridate)
 
+# Create your own root
 setwd("D:/data/taxi/nyctaxi/")
 
 ###############################################################################
 # Download the RAW data
 ###############################################################################
 
-urls = fread("urlsYellow.csv")[,x]
+dir.create(file.path(".", "nyc_yellow_raw/"), showWarnings = FALSE)
 
-urls2015 = urls[grep("2015", urls)]
+urls = fread("urlsYellow.csv", sep= ",", header = F)$V1
+# urls2015 = urls[grep("2015", urls)]
 
 library(RCurl)
 bdown=function(url, file){
@@ -30,10 +32,11 @@ bdown=function(url, file){
 }
 
 fnames = paste0("./nyc_yellow_raw/", 
-                sapply(strsplit(urls2015, "/"), function(x){x[6]}))
+                sapply(strsplit(urls, "/"), function(x){x[6]}))
 
-# Warning! 20 minutes @ 200 mbps
-mapply(bdown, urls2015, fnames)  
+
+# Warning! 20 minutes @ 200 mbps for 6 months of 2015
+mapply(bdown, urls, fnames)  
 
 ###############################################################################
 # Load from files locally
