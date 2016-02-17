@@ -4,8 +4,10 @@
 @author: Michael Dann
 
 Recent notes: 
-    Succeeds 2009, 2010, 2011, 2015
-    failing on 2012/01/28
+    Missing: 2012/01/29 and 2012/01/30
+    First run: succeeds 2015
+    Second run: 2009-2012 failing on 2012/01/29 
+    Third run: 2014-2012 backwards, fails on 1/30        
 """
 
 from bs4 import BeautifulSoup
@@ -16,9 +18,9 @@ import time
 import re
 
 # Project path
-# path = "D:\\data\\taxi"
-# os.chdir(path)
-# os.listdir("./")
+path = "D:\\data\\taxi\\nyctaxi"
+os.chdir(path)
+os.listdir("./")
 
 
 
@@ -36,13 +38,16 @@ def readRow(row):
 
 # See 'wunderUrls.csv" for 2015
 # And wunderUrls2.csv" for 2009-2014
+# And wunderUrls3.csv" for 2012-01-28 through 2014
+
 urls = []
-with open('wunderUrls2.csv', 'rb') as f:
+with open('wunderUrls3.csv', 'rb') as f:
     reader = csv.reader(f)
     for row in reader:
         urls.append(row[0])
   
-for url in urls:
+for url in urls[::-1]:
+    print(url)
     
     # Flood prevention
     time.sleep(0.2)    
