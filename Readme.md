@@ -1,4 +1,9 @@
-# Optimal Taxi Distribution
+---
+title: "Optimal Taxi Distribution"
+output:
+  html_document:
+    fig_width: 4
+---
 ***
 The primary question faced by the operator of a taxi network is how to distribute cabs to maximize revenue (or minimize cost). This is a type of a inventory control problem with stochastic components that may increase or decrease inventory at a given location. The cab network operator experiences stochastic demand for trips which distribute the cabs across a city according to the patterns of daily routine and is then faced with the question of how to best direct cabs throughout the day to optimize revenue. Or put simply, "where should I park my cab between trips?" and the closely related question, "how many cabs do I need at a minimum?" The problem also informs the regulator, "what is the effect of changing regulation on the efficiency of meeting ridership demand?"
 
