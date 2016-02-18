@@ -9,19 +9,28 @@ library(ggplot2)
 project.root.dir = "D:/data/taxi/nyctaxi/"
 
 # Flat files by tract
-pickup.dir  = "F:/nyc_yellow_tract/pickup/"
-dropoff.dir = "F:/nyc_yellow_tract/dropoff/"
+pickup.dir   = "F:/nyc_yellow_tract/pickup/"
+dropoff.dir  = "F:/nyc_yellow_tract/dropoff/"
+pickup.dirs  = list.files(pickup.dir)
+dropoff.dirs = list.files(pickup.dir)
+
+# Necessary parity check: is there a pickup tract dir for every dropoff?
+identical(pickup.dirs, dropoff.dirs)
+
 net.dirs = "F:/nyc_yellow_tract/net//"
 
 source(paste0(project.root.dir, "nycParseRaw.R"))
 
-wunder <- fread(paste0(project.root.dir, "wunder/wunder.csv"))
+# Weather data, for later
+# wunder <- fread(paste0(project.root.dir, "wunder/wunder.csv"))
 
-pickup.dirs  <- list.files(pickup.dir)
-dropoff.dirs <- list.files(pickup.dir)
+# Tract code files, neighborhood, borrough etc.
+tract_codes = fread("tract_codes.csv")
+setnames(tract_codes, "id", "tract_id")
+tract_codes[,tract_id := as.integer(tract_id)]
+setkey(tract_codes, tract_id)
 
-# Necessary parity check
-identical(pickup.dirs, dropoff.dirs)
+
 
 for(tract in setdiff(pickup.dirs, "0000")){
   # tract = "0029" # Testing
@@ -31,7 +40,12 @@ for(tract in setdiff(pickup.dirs, "0000")){
   cleanV1(dt.pickups)
   appendTimeVariablesCsv(dt.pickups)
   appendTimeVariablesCsv(dt.dropoffs)
-
+  
+  # Work in progress: track pickup/dropoffs by NTACode and BoroCode
+  # setkey(dt.pickups, tract_id)
+  # setkey(dt.dropoffs, tract_id)
+  # (tract_codes[dt.pickups])[, list(BoroCode, NTACode)]
+  
   # Transfer Matricies rows
   
   # Trips out of the tract
@@ -41,7 +55,7 @@ for(tract in setdiff(pickup.dirs, "0000")){
   transfer.into = dt.dropoffs[,list(trips = .N) , by = list(pickup_tract_id, dropoff_weekday, dropoff_hour, dropoff_quarter_hour)]
   
   
-  # Trips in, trips out
+  # Trips in, trips out, by tract_id
   into = dt.dropoffs[,list(trips.in = .N) , by = list(dropoff_year, dropoff_month, dropoff_day, dropoff_weekday, dropoff_hour, dropoff_quarter_hour)]
   out  = dt.pickups[,list(trips.out = .N) , by = list(pickup_year, pickup_month, pickup_day, pickup_weekday, pickup_hour, pickup_quarter_hour)]
   

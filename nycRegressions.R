@@ -2,7 +2,9 @@
 # Mhdann@gmail.com
 #
 # Econometric regressions of weather impacts on taxi demand/passenger density
-
+#
+# Database deleted as part of exploratory data purge, now defunct file
+#
 setwd("D:/data/taxi/nyctaxi/")
 
 library(ggplot2)
