@@ -5,8 +5,7 @@
 
 library(data.table)
 
-setwd("D:/data/taxi/nyctaxi/")
-files = list.files("nyc_yellow_raw/", full.names = T)
+files = list.files(full.names = T)
 
 # Compare names
 dts       <- lapply(files, fread, nrows=1000)

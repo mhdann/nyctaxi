@@ -11,7 +11,7 @@ New York City recently released information on all taxi trips throughout the cit
 
 First, a look at the effect of demand on taxi distribution. The following are plots of net taxi trips into given spatial regions (tract or burough) over every 15 minute interval during a representative Monday from the entire dataset (straight averaging, no conditioning on holidays). The tract level modeling may appear execessive, but due to the depth of the data the vast majority of spatial heterogeneity here is signal, not noise. Note that to show variation the scale has been clipped in both images, so pay careful attention to the fully saturated regions.
 
-![Tract Level Gif](https://i.imgur.com/FMpgKhh.gif) ![Burough Level Gif](https://i.imgur.com/vfKduED.gif)
+![Tract Level Gif](http://i.imgur.com/gzMAhgY.gif) ![Burough Level Gif](https://i.imgur.com/vfKduED.gif)
 
 ### Basic Dynamic Stochastic Program
 #### Dynamics

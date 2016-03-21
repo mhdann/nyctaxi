@@ -1,0 +1,42 @@
+install.packages(c("neuralnet", "NeuralNetTools"))
+library(neuralnet)
+library(data.table)
+
+# Data
+setwd("F:/nyc_yellow_tract/pickup/0028")
+dt <- rbindlist(lapply(list.files(), fread))
+
+net <- fread("F:/nyc_yellow_tract/net/net.trips.csv")
+
+source(file = "C:/Users/mm/Dropbox/Incubator/nyctaxi/nycParseRaw.R")
+appendTimeVariablesCsv(dt)
+names(dt)
+
+# f: (pickup, timevars) -> (dropoff, duration) 
+# f: (pickup_tract_id, pickup_year, pickup_month, pickup_weekday) -> (dropoff_tract_id, trip_duration)
+
+# Set up neural net
+# dt[, pickup_weekday := as.factor(pickup_weekday)]
+# dt[, pickup_month := as.factor(pickup_month)]
+# dt[, pickup_year := as.factor(pickup_year)]
+dt[, pickup_time := pickup_hour + pickup_min/60]
+dt <- dt[trip_time < 2,]
+
+nn <- neuralnet(data = dt, formula = trip_time ~ pickup_time,
+                           hidden = 2)
+dt[, trip_time_hat := nn$net.result]
+plot(dt[,list(trip_time, trip_time_hat)][sample(nrow(dt), 500)])
+
+nn <- nnet(x = dt[,list(pickup_time, factor(pickup_weekday))], y = dt[,list(trip_time)], size = 5, maxit = 40, linout = T)
+dt[, trip_time_hat := predict(nn, dt[,list(pickup_time, factor(pickup_weekday))])]
+plot(dt[,list(trip_time, trip_time_hat)][sample(nrow(dt), 500)])
+abline(0,1)
+
+
+x = 1*runif(100)
+y = sin(x*2*pi)
+
+nn.sine <- nnet(x=x, y=y, size=6, maxit=40, linout=T)
+plot(nn.sine$residuals)
+plot(x, predict(nn.sine, data.frame(x = x))) 
+lines(sort(x), y[order(x)])

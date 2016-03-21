@@ -1,6 +1,6 @@
 # NYC Taxi Project
 #
-#  Processing tract identified trips to transfer matricies and net trips
+#  Processing tract identified trips to net transfer matricies and net trips
 # 
 
 library(data.table)
@@ -46,7 +46,7 @@ for(tract in setdiff(pickup.dirs, "0000")){
   # setkey(dt.dropoffs, tract_id)
   # (tract_codes[dt.pickups])[, list(BoroCode, NTACode)]
   
-  # Transfer Matricies rows
+  # To get Net Transfer Matrices rows
   
   # Trips out of the tract
   transfer.out  = dt.pickups[,list(trips = .N) , by = list(dropoff_tract_id, pickup_weekday, pickup_hour, pickup_quarter_hour)]

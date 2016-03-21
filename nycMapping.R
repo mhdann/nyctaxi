@@ -2,8 +2,6 @@
 #
 #
 
-setwd("D:/data/taxi/nyctaxi/")
-
 library(rgdal)
 library(maptools)
 library(dplyr)
@@ -11,6 +9,7 @@ library(ggplot2)
 library(RInside)
 library(mapproj)
 
+# Requires RTools and RTools dir in windows path!!!!!
 if (!require(gpclib)) install.packages("gpclib", type="source")
 gpclibPermit() # 
 
@@ -47,17 +46,17 @@ roughingGrid <- function(dt, var="pickup",  nyc_map, n = 800, offset = 0.00001){
   # For a point, returning the roughingGrid cell number
   # (top to bottom, *RIGHT TO LEFT*)
   
-  dt[, rgid := ((lat.max - lat) %/% lat.width) * n +
+  dt[, grid := ((lat.max - lat) %/% lat.width) * n +
        (lon.max - lon) %/% lon.width + 1]
   
   # Clip the box
-  dt[lon > lon.max, rgid := NA]
-  dt[lat > lat.max, rgid := NA]
-  dt[lon < lon.min, rgid := NA]
-  dt[lat < lat.min, rgid := NA]
+  dt[lon > lon.max, grid := NA]
+  dt[lat > lat.max, grid := NA]
+  dt[lon < lon.min, grid := NA]
+  dt[lat < lat.min, grid := NA]
   
-  setnames(dt, c("lat", "lon", "rgid"),
-           paste0(var, c("_latitude", "_longitude", "_rgid")))
+  setnames(dt, c("lat", "lon", "grid"),
+           paste0(var, c("_latitude", "_longitude", "_grid")))
   
   
   # Testing
@@ -68,8 +67,8 @@ roughingGrid <- function(dt, var="pickup",  nyc_map, n = 800, offset = 0.00001){
   #  roughingGrid(max(nyc_map$lon), min(nyc_map$lat), nyc_map, n = 20) # n*(n-1) + 1
   
   # Time it: 0.6s with boundary checking, 0.35s w/o
-  # system.time(dt200901[,rgid := roughingGrid(pickup_longitude, pickup_latitude)])
-  # sum(is.na(dt200901$rgid)) # 247k outside the grid
+  # system.time(dt200901[,grid := roughingGrid(pickup_longitude, pickup_latitude)])
+  # sum(is.na(dt200901$grid)) # 247k outside the grid
   
 }
 
@@ -140,21 +139,21 @@ roughingGridToTracts <- function(tracts, rgrid.polys){
 # 1) Do once: Map rough grid boxes n x n to subset of census tracts.
 # O(n2), n = 50 is 90s, n = 100 is 6.5 minutes, n = 200 is 28 min, 
 # system.time(rgridToTractMapN50 <- roughingGridToTracts(tracts, nyc_map, n = 50))
-# saveRDS(rgridToTractMapN50, file="./rgidToTractN50.RDS")
+# saveRDS(rgridToTractMapN50, file="./gridToTractN50.RDS")
 # system.time(rgridToTractMapN100 <- roughingGridToTracts(tracts, nyc_map, n = 100))
-# saveRDS(rgridToTractMapN100, file="./rgidToTractN100.RDS")
+# saveRDS(rgridToTractMapN100, file="./gridToTractN100.RDS")
 # system.time(rgridToTractMapN200 <- roughingGridToTracts(tracts, nyc_map, n = 200))
-# saveRDS(rgridToTractMapN200, file="./rgidToTractN200.RDS")
+# saveRDS(rgridToTractMapN200, file="./gridToTractN200.RDS")
 # polys = roughingGridPolys(nyc_map, n = 800, offset = 0.00001)
 # system.time(rgridToTractMapN800 <- roughingGridToTracts(tracts, rgrid.polys = polys))
-# saveRDS(rgridToTractMapN800, file="./rgidToTractN800.RDS")
+# saveRDS(rgridToTractMapN800, file="./gridToTractN800.RDS")
 
-# rgridToTractMapN200 = readRDS("./rgidToTractN200.RDS")
-# rgridToTractMapN400 = readRDS("./rgidToTractN400.RDS")
-rgridToTractMapN800 = readRDS("./rgidToTractN800.RDS")
+# rgridToTractMapN200 = readRDS("./gridToTractN200.RDS")
+# rgridToTractMapN400 = readRDS("./gridToTractN400.RDS")
+rgridToTractMapN800 = readRDS("./gridToTractN800.RDS")
 
 # system.time(rgridToTractMapN400 <- roughingGridToTracts(tracts, nyc_map, n = 400))
-# saveRDS(rgridToTractMapN400, file="./rgidToTractN400.RDS")
+# saveRDS(rgridToTractMapN400, file="./gridToTractN400.RDS")
 
 quickSetTractId <- function(dt, map, var){
   # Quick-sets the easy to find tract ids based on the roughing grid
@@ -175,23 +174,23 @@ quickSetTractId <- function(dt, map, var){
   }
   
   N = length(map)
-  dt.key = data.table(rgid = c(NA, 1:N), tract_id = c(NA, sapply(lapply(map,unlist), keys)))  
+  dt.key = data.table(grid = c(NA, 1:N), tract_id = c(NA, sapply(lapply(map,unlist), keys)))  
   
-  setnames(dt, paste0(var, "_rgid"), "rgid")  
-  setkey(dt,     rgid)  # 3s
-  setkey(dt.key, rgid)  # 0s
+  setnames(dt, paste0(var, "_grid"), "grid")  
+  setkey(dt,     grid)  # 3s
+  setkey(dt.key, grid)  # 0s
   
   # Fast-merge
-  dt[, tract_id := dt.key[dt[,list(rgid)]]$tract_id]
+  dt[, tract_id := dt.key[dt[,list(grid)]]$tract_id]
   
-  setnames(dt, "rgid",     paste0(var, "_rgid"))
+  setnames(dt, "grid",     paste0(var, "_grid"))
   setnames(dt, "tract_id", paste0(var, "_tract_id"))
   return(NULL)
 }
 
-# Vectorized version of roughing, meant to be run for each rgid or groups of rgid
-idOfTract <- function(lat, lon, rgid){
-  ids = unique(unlist(rgridToTractMapN800[unique(rgid)]))
+# Vectorized version of roughing, meant to be run for each grid or groups of grid
+idOfTract <- function(lat, lon, grid){
+  ids = unique(unlist(rgridToTractMapN800[unique(grid)]))
   sp = SpatialPoints(data.frame(lon, lat), CRS("+proj=longlat +datum=WGS84"))
   out = over(sp, tracts[ids, ])
   # print(length(ids)) # tracing
@@ -210,8 +209,8 @@ appendTractIds <- function(dt, nyc_map, n = 800, map = rgridToTractMapN800){
   
   # slow - spatial pairing of tract_ids for remaining points
   # 50s - 90s
-  dt[ (pickup_tract_id == 0),  pickup_tract_id := idOfTract( pickup_latitude,  pickup_longitude,  pickup_rgid), by =  pickup_rgid %/% (n/2)]
-  dt[(dropoff_tract_id == 0), dropoff_tract_id := idOfTract(dropoff_latitude, dropoff_longitude, dropoff_rgid), by = dropoff_rgid %/% (n/2)]  
+  dt[ (pickup_tract_id == 0),  pickup_tract_id := idOfTract( pickup_latitude,  pickup_longitude,  pickup_grid), by =  pickup_grid %/% (n/2)]
+  dt[(dropoff_tract_id == 0), dropoff_tract_id := idOfTract(dropoff_latitude, dropoff_longitude, dropoff_grid), by = dropoff_grid %/% (n/2)]  
   
   print(paste0("Appended tract_id"))
 }
@@ -234,12 +233,12 @@ appendTractIds <- function(dt, nyc_map, n = 800, map = rgridToTractMapN800){
 # sum(sub$pickup_tract_id==0, na.rm=T) # how many left, 13.5 m for 100, 12.9 m for 200
 
 # Timing: 123s for n = 30, 130s for n = 100, 120s for n = 200
-# system.time(sub[ (pickup_tract_id == 0),  pickup_tract_id := idOfTract( pickup_latitude,  pickup_longitude,  pickup_rgid), by = pickup_rgid])
-# system.time(sub[(dropoff_tract_id == 0), dropoff_tract_id := idOfTract(dropoff_latitude, dropoff_longitude, dropoff_rgid), by = dropoff_rgid])
+# system.time(sub[ (pickup_tract_id == 0),  pickup_tract_id := idOfTract( pickup_latitude,  pickup_longitude,  pickup_grid), by = pickup_grid])
+# system.time(sub[(dropoff_tract_id == 0), dropoff_tract_id := idOfTract(dropoff_latitude, dropoff_longitude, dropoff_grid), by = dropoff_grid])
 
 # testing
-# idOfTract(dt200901[1,pickup_latitude], dt200901[1,pickup_longitude],  dt200901[1,pickup_rgid])
-# idOfTract(dt200901[1,dropoff_latitude], dt200901[1,dropoff_longitude],  dt200901[1,dropoff_rgid])
+# idOfTract(dt200901[1,pickup_latitude], dt200901[1,pickup_longitude],  dt200901[1,pickup_grid])
+# idOfTract(dt200901[1,dropoff_latitude], dt200901[1,dropoff_longitude],  dt200901[1,dropoff_grid])
 
 
 # Sanity check for spatial mapping

@@ -1,0 +1,85 @@
+w_lat,w_lon,e_lat,e_lon,name,alt_name,note,class
+40.52696,-74.27173,40.525535,-74.23606,Outerbridge Crossing,,,long
+40.579482,-73.88913,40.567383,-73.88099,Marine Parkway-Gil Hodges Memorial Bridge,,,long
+40.597454,-73.82091,40.588042,-73.81785,Cross Bay Veterans Memorial Bridge,,,
+40.601875,-74.05903,40.611266,-74.03032,Verrazano-Narrows Bridge,,,
+40.601896,-73.8999,40.606847,-73.89834,Mill Basin Bridge,,,minor
+40.634005,-74.14495,40.652805,-74.13584,Bayonne Bridge,,,long
+40.642193,-74.20824,40.629767,-74.18582,Goethals Bridge,,,
+40.711246,-74.00336,40.70014,-73.98915,Brooklyn Bridge,,,major
+40.714167,-73.9318,40.714439,-73.93053,Metropolitan Avenue Bridge,,,
+40.714197,-73.93175,40.714457,-73.93057,Grand Street Bridge,,,
+40.715941,-73.99547,40.699522,-73.98631,Manhattan Bridge,,,
+40.717867,-73.986,40.710073,-73.96079,Williamsburg Bridge,,,
+40.72455,-73.93648,40.732664,-73.925,Kosciuszko Bridge,,,
+40.732633,-73.94299,40.734343,-73.93816,Greenpoint Avenue Bridge,J. J. Byrne Memorial Bridge,,
+40.7358,-73.95253,40.743292,-73.95122,Pulaski Bridge,Borden Bridge,,
+40.740971,-73.9415,40.740687,-73.93949,Hunters Point Avenue Bridge,,,minor
+40.760542,-73.96279,40.752336,-73.94404,Ed Koch Queensboro Bridge,,,
+40.764033,-73.947,40.762495,-73.94388,Roosevelt Island Bridge,,,
+40.775561,-73.89212,40.787712,-73.884,Rikers Island Bridge,,,
+40.797448,-73.92164,40.772184,-73.91962,Robert F. Kennedy Bridge (Suspension Bridge),Triborough Bridge,,
+40.801932,-73.93086,40.805988,-73.92446,Willis Avenue Bridge,,North only,
+40.806965,-73.93521,40.808202,-73.93061,Third Avenue Bridge,,South Only,
+40.814078,-73.93514,40.81374,-73.93114,Madison Avenue Bridge,,,
+40.818076,-73.80772,40.788018,-73.78957,Throgs Neck Bridge,,,
+40.820245,-73.83624,40.791692,-73.82324,Bronx–Whitestone Bridge,,,
+40.820334,-73.93622,40.81932,-73.93013,145th Street Bridge,,,
+40.82798,-73.93518,40.82822,-73.93092,Macombs Dam Bridge,,,
+40.846403,-73.93182,40.844697,-73.9247,Alexander Hamilton Bridge,,,
+40.848166,-73.93081,40.844997,-73.92411,Washington Bridge,,,
+40.853722,-73.96424,40.849536,-73.94174,George Washington Bridge,,High volume,
+40.857266,-73.79694,40.855355,-73.79118,City Island Bridge,,,minor
+40.860204,-73.81713,40.864576,-73.81394,Pelham Bridge,,,
+40.861934,-73.81942,40.864783,-73.8162,Hutchinson River Bridge,,Amtrak,
+40.863574,-73.82605,40.871229,-73.81919,Hutchinson River Parkway Bridge,,,
+40.863661,-73.91714,40.862014,-73.91299,University Heights Bridge,,,
+40.872878,-73.91198,40.874516,-73.90979,Broadway Bridge,,car + rail,
+40.876113,-73.9247,40.879883,-73.9189,Henry Hudson Bridge,,,
+40.886253,-73.82711,40.889982,-73.81992,Eastchester Bridge,,,
+,,,,Hell Gate Bridge,,Rail?,
+,,,,High Bridge,,Pedestrian,
+,,,,Westchester Creek,,,
+,,,,Unionport Bridge,,,minor
+,,,,Bronx River,,,
+,,,,Eastchester Bay,,,
+,,,,Union Street Bridge,,,minor
+,,,,Carroll Street Bridge,,,minor
+,,,,Third Street Bridge,,,minor
+,,,,Ninth Street Bridge,,,minor
+,,,,Culver Viaduct,,Culver trains,minor
+,,,,Hamilton Avenue Bridge,,,minor
+,,,,Gowanus Expressway,,,minor
+,,,,The Joseph P. Addabbo Memorial Bridge,,,
+,,,,North Channel Swing Bridge,,A trains,
+,,,,Beach Channel Drawbridge,,A S Trains,
+,,,,102nd Street Bridge,,,
+,,,,Hawtree Creek Bridge,,,
+,,,,Arthur Kill Vertical Lift Bridge,,Rail,
+,,,,,,,
+40.705481,-74.015,40.678298,-74.00296,Brooklyn-Battery Tunnel,,I 478,major
+,,,,Joralemon Street Tunnel,,trains,
+,,,,Montague Street Tunnel,,trains,
+,,,,Clark Street Tunnel,,trains,
+,,,,Cranberry Street Tunnel,,trains,
+,,,,Rutgers Street Tunnel,,trains,
+,,,,14th Street Tunnel,,trains,
+,,,,East River Tunnels,,amtrak,
+40.746415,-73.9747,40.741282,-73.95413,Queens–Midtown Tunnel,,I 495,major
+,,,,Steinway Tunnel,,trains,
+,,,,53rd Street Tunnel,,trains,
+,,,,60th Street Tunnel,,trains,
+,,,,63rd Street Tunnel,,trains,
+,,,,Ravenswood Tunnel,,power?,
+,,,,,,,
+,,,,Lexington Avenue Tunnel,,trains,
+,,,,149th Street Tunnel,,trains,
+,,,,Concourse Tunnel,,trains,
+,,,,,,,
+,,,,Downtown Hudson Tubes,,,
+40.729694,-74.03802,40.729694,-74.03802,Holland Tunnel,,I 78,major
+,,,,Uptown Hudson Tubes,,,
+,,,,North River Tunnels,,amtrak,
+40.765012,-74.02359,40.756948,-73.99623,Lincoln Tunnel,,I 495,major
+,,,,,,,
+,,,,Greenpoint Tube,,trains,

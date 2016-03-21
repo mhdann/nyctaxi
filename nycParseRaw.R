@@ -2,6 +2,8 @@
 #  Cleaning functions for raw data
 # 
 
+# Notes: should exclude anything longer than 2 hrs
+
 library(data.table)
 library(fasttime)
 library(lubridate)
@@ -69,6 +71,24 @@ appendTimeVariables <- function(dt, singleStamp = F, ym = F){
   }
 }
 
+appendTimeVariablesSimple <- function(dt){
+  # Replaces previous functions, fast
+  library(lubridate)
+  library(fasttime)
+  # p_datetime  = as.POSIXct(dt$pickup_datetime,  format="%Y-%m-%d %H:%M:%S")
+  # d_datetime = as.POSIXct(dt$dropoff_datetime, format="%Y-%m-%d %H:%M:%S")  
+  p_datetime  = fastPOSIXct(dt$pickup_datetime, tz = "GMT")
+  d_datetime = fastPOSIXct(dt$dropoff_datetime, tz = "GMT")
+  # hackish tz treatment but verifiably working.
+  # I never save the p/d_datetime, they are intermediary
+  print("Processed datetime from string")
+  dt[, trip_time := as.numeric(difftime(d_datetime, p_datetime, units = "hour"))]
+  dt[, fare_rev_per_hour := fare_amount/trip_time]
+  print("Calculated fare_rev_per_hour")
+
+}
+
+
 clean <- function(dt){
   # Clean the raw data of unrealistic distances and trip costs per mile
   # append "clean" field using side-effects of data.table references
@@ -101,7 +121,7 @@ cleanAll <- function(dt, ...){
 }
 
 
-appendTimeVariablesCsv <- function(dt, singleStamp = F, ym = F){
+appendTimeVariablesCsv <- function(dt, singleStamp = F, ym = F, rm_datetime = T){
   # Replaces previous functions, fast
   library(lubridate)
   library(fasttime)
@@ -136,8 +156,10 @@ appendTimeVariablesCsv <- function(dt, singleStamp = F, ym = F){
     dt[,pickup_quarter_hour  := pickup_min  %/% 15]
     dt[,dropoff_quarter_hour := dropoff_min %/% 15]
     print("Added quarter_hour")
-    dt[, (c("pickup_datetime", "dropoff_datetime")) := NULL]
-    print("Removed string datetime")
+    if (rm_datetime){
+      dt[, (c("pickup_datetime", "dropoff_datetime")) := NULL]
+      print("Removed string datetime")  
+    }
   }
 }
 
