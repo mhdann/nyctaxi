@@ -77,6 +77,8 @@ gridHFlip <- function(grid_id, n){
   # Testing
   # gridHFlip(18:1, n = 9)
   # gridHFlip(1:20, n = 9)
+  # matrix(gridHFlip(1:9, 3), ncol = 3,byrow = T)
+  # matrix(gridHFlip(1:16, 4), ncol = 4,byrow = T)
 }
 
 gridReduce <- function(grid_id, n = 100, smaller_n = 25){
@@ -290,6 +292,7 @@ plotGraph <- function(graph){
 M =  gridToGraph(grid_id = 1:10000, n = 100)
 M.wat = graphWater(M)
 A = graphBridgesAndTunnels(M.wat) # Adjacency matrix A
+
 saveAdjacencyMatrix <- function(A, filename = "./"){
   
 }
@@ -308,7 +311,7 @@ connectivity = colSums(A) # Number of connected grid points
 diffuse <- function(V, delta=0){
   averages = colSums(V * A)/connectivity
   averages[is.na(averages)] = 0
-  del.V = (averages-V) + delta
+    del.V = (averages-V) + delta
   return(V + del.V)
 }
   
